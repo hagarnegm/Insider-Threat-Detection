@@ -1,6 +1,7 @@
 import json
 import pickle
 import time
+import src.models.config as config
 from src.features.build_features import *
 
 import pandas as pd
@@ -25,7 +26,7 @@ def extract_logs(data, col_num, content=False):
 
 
 def detect_insiders(features):
-    xgb = pickle.load(open(r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\models\xgboost.sav", 'rb'))
+    xgb = pickle.load(open(r"../../models/xgboost.sav", 'rb'))
     prediction_labels = xgb.predict(features)
     return prediction_labels
 
@@ -36,7 +37,7 @@ producer = KafkaProducer(bootstrap_servers=['localhost:9092'], value_serializer=
 
 elastic_client = Elasticsearch(
     "https://localhost:9200",
-    basic_auth=("elastic", "90ryEhZZt4fverYocHj_"), ca_certs="D:\Program Files\elasticsearch-8.1.2\config\certs\http_ca.crt"
+    basic_auth=(config.es_username, config.es_password), ca_certs=config.cert_path
 )
 
 consumer.subscribe(['logon_logs', 'device_logs', 'file_logs', 'http_logs', 'email_logs'])
@@ -75,14 +76,14 @@ for query in consumer:
 print("Log files consumed...")
 
 merged_features = build_features(pd.concat(logon_data), pd.concat(device_data), pd.concat(file_data), pd.concat(http_data), pd.concat(email_data))
-merged_features.to_csv(r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\data\processed\test.csv")
+merged_features.to_csv(r"../../data/processed/test.csv")
 
 print("Features extracted...")
 
-file = open(r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\models\top_features.txt")
+file = open(r"../../models/top_features.txt")
 top_features = file.read().split("\n")
 
-merged_features = pd.read_csv(r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\data\processed\test.csv")
+merged_features = pd.read_csv(r"../../data/processed/test.csv")
 unique_dates = merged_features.day.unique()
 
 for date in unique_dates:

@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import timedelta
 
 
-all_files = glob2.glob(r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\data\raw\LDAP/*.csv")
+all_files = glob2.glob(r"../../data/raw/LDAP/*.csv")
 li = []
 for filename in all_files:
     df = pd.read_csv(filename, index_col=None, header=0)

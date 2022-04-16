@@ -27,7 +27,7 @@ def produce_message(producer_instance, topic, message):
 
 if __name__ == "__main__":
 
-    root_dir = r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\elg7186-project-group_project_-3\data\raw\test"
+    root_dir = r"../../../data/raw/test"
     device_logfile = pd.read_csv(os.path.join(root_dir, "device.csv"))
     device_logfile["date"] = pd.to_datetime(device_logfile['date']).dt.normalize()
     unique_dates = device_logfile["date"].unique()

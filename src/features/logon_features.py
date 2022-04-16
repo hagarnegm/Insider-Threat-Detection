@@ -29,8 +29,7 @@ def process_logon(df):
 
 
 def logon_statistical_features(logon_df, return_stats=True):
-    all_logon_df = pd.read_csv(
-        r"D:\Hagar\Documents\uOttawa\Second Term\ELG7186 -  AI for Cyber Security\4- Project\Dataset\r5.2\logon.csv")
+    all_logon_df = pd.read_csv(r"../../data/raw/logon.csv")
     all_logon_df['date'] = pd.to_datetime(all_logon_df['date'])
     user_pcs_df = map_user_pcs(all_logon_df)
 
